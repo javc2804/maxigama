@@ -9,6 +9,17 @@
   transition: transform 3s;
 }
 
+.indicator {
+  position: absolute;
+  top: -20px; /* Ajusta según sea necesario */
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent; /* Ajusta el tamaño según sea necesario */
+  border-right: 20px solid transparent; /* Ajusta el tamaño según sea necesario */
+  border-top: 40px solid black; /* Ajusta el tamaño y el color según sea necesario */
+  transform: translateX(-50%);
+}
 .wheel.spinning {
   animation: spin 0.8s linear infinite;
 }
