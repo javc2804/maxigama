@@ -1,5 +1,8 @@
 // App.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect, Key } from "react";
+import { useSpring, animated, config } from "react-spring";
+import { useParams } from "react-router-dom";
+import Confetti from "react-dom-confetti";
 import "./App.css";
 
 const colors = [
@@ -19,11 +22,23 @@ const colors = [
 ];
 
 const App: React.FC = () => {
+  const { num } = useParams<{ num: string }>();
   const [prize, setPrize] = useState<number | null>(null);
   const [color, setColor] = useState<string | null>(null);
   const [spinning, setSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
-  const [segments, setSegments] = useState(6); // Nuevo estado para la cantidad de segmentos
+  const [segments, setSegments] = useState(Number(num)); // Nuevo estado para la cantidad de segmentos
+  const [props, set] = useSpring(() => ({ scale: 1 }));
+  const [prizeProps, setPrizeProps] = useSpring(() => ({
+    opacity: 0,
+    config: config.stiff,
+  }));
+  const [confetti, setConfetti] = useState(false); // Nuevo estado para el confeti
+  const [confettiKey, setConfettiKey] = useState<Key>(Math.random()); // Nuevo estado para la clave del confeti
+
+  useEffect(() => {
+    setSegments(Number(num));
+  }, [num]);
 
   const spinWheel = () => {
     const prize = Math.floor(Math.random() * 91) + 10; // Genera un número aleatorio entre 10 y 100
@@ -33,11 +48,41 @@ const App: React.FC = () => {
     setColor(color);
     setRotation(rotation);
     setSpinning(true);
-    setTimeout(() => setSpinning(false), 3000); // Detiene la animación después de 3 segundos
+    setTimeout(() => {
+      setSpinning(false);
+      setPrizeProps({ opacity: 1 }); // Muestra el texto del premio
+      setConfetti(true); // Lanza el confeti
+      setTimeout(() => {
+        setConfetti(false); // Detiene el confeti después de que la animación se haya completado
+      }, confettiConfig.duration);
+    }, 3000);
+  };
+
+  const products = [
+    "https://reinco.com.ve/wp-content/uploads/2024/03/clase-b.jpg",
+    "https://reinco.com.ve/wp-content/uploads/2024/03/clase-c.jpg",
+  ];
+
+  const confettiConfig = {
+    angle: 90,
+    spread: 360,
+    startVelocity: 20,
+    elementCount: 200,
+    dragFriction: 0.1,
+    duration: 5000,
+    stagger: 3,
+    width: "10px",
+    height: "10px",
+    perspective: "500px",
+    colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"],
   };
 
   return (
     <div className="App">
+      <img
+        src="https://pinturaspintugama.com/wp-content/uploads/elementor/thumbs/cropped-Mesa-de-trabajo-1-qdclwmc976l3gzlulke8bgrr1z2rr7oyk5f1w9uk1a.jpg"
+        alt=""
+      />
       <div
         className={`wheel ${spinning ? "spinning" : ""}`}
         style={{ transform: `rotate(${rotation}deg)` }}
@@ -50,25 +95,62 @@ const App: React.FC = () => {
               backgroundColor: colors[index % colors.length],
               transform: `rotate(${index * (360 / segments)}deg)`,
             }}
-          ></div>
+          >
+            <img
+              src={products[index % products.length]}
+              alt="Descripción de la imagen"
+              className="segment-image"
+            />
+          </div>
         ))}
       </div>
       <div className="indicator"></div> {/* Aquí está el indicador */}
-      <div className="controls">
+      <div className="controls" style={{ zIndex: 2 }}>
         {" "}
-        {/* Nuevo div para los controles */}
-        <button onClick={spinWheel}>Girar la ruleta</button>
-        <select
-          value={segments}
-          onChange={(e) => setSegments(Number(e.target.value))}
+        {/* Ajusta el z-index del botón */}
+        {/* ... */}
+        <animated.button
+          style={{
+            transform: props.scale.to((scale) => `scale(${scale})`),
+            backgroundColor: "#ffd700",
+            border: "none",
+            color: "black",
+            padding: "15px 32px",
+            textAlign: "center",
+            textDecoration: "none",
+            display: "inline-block",
+            fontSize: "16px",
+            margin: "4px 2px",
+            cursor: "pointer",
+            borderRadius: "12px",
+            boxShadow: "0 9px #999",
+            transition: "transform 0.2s", // Ajusta la duración de la transición
+            textShadow: "1px 1px 2px black",
+          }}
+          onMouseDown={() => set({ scale: 0.8 })} // Ajusta la escala para una animación más notable
+          onMouseUp={() => set({ scale: 1 })}
+          onClick={spinWheel}
         >
-          {Array.from({ length: 12 }, (_, i) => (
-            <option key={i} value={i + 1}>
-              {i + 1}
-            </option>
-          ))}
-        </select>
-        {prize && color && <p>¡Has ganado {prize}$!</p>}
+          Girar la ruleta
+        </animated.button>
+        {prize && color && (
+          <animated.p style={{ ...prizeProps, color: "white" }}>
+            ¡Has ganado {prize}$!
+          </animated.p>
+        )}
+        <Confetti active={confetti} config={confettiConfig} key={confettiKey} />
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 1,
+        }}
+      >
+        <Confetti active={confetti} config={confettiConfig} />
       </div>
     </div>
   );
