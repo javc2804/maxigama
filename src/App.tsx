@@ -7,23 +7,22 @@ import "./App.css";
 
 const colors = [
   "red",
-  "orange",
-  "yellow",
-  "green",
-  "blue",
-  "indigo",
+  "#ff6f2a",
+  "#ffc942",
+  "#95cca5",
+  "#0087c0",
+  "#9d988d",
   "violet",
-  "pink",
+  "#f580a5",
   "brown",
   "gray",
   "lightblue",
-  "darkbrown",
+  "#a83727",
   "purple", // color adicional
 ];
 
 const App: React.FC = () => {
   const { num } = useParams<{ num: string }>();
-  const [prize, setPrize] = useState<number | null>(null);
   const [color, setColor] = useState<string | null>(null);
   const [spinning, setSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
@@ -41,16 +40,15 @@ const App: React.FC = () => {
   }, [num]);
 
   const spinWheel = () => {
-    const prize = Math.floor(Math.random() * 91) + 10; // Genera un número aleatorio entre 10 y 100
-    const color = colors[Math.floor(Math.random() * segments)]; // Selecciona un color aleatorio basado en la cantidad de segmentos
     const rotation = Math.floor(Math.random() * 360); // Gira la ruleta a una posición aleatoria
-    setPrize(prize);
-    setColor(color);
+    const selectedSegment = Math.floor(rotation / (360 / segments)); // Calcula el segmento seleccionado
+    const color = colors[selectedSegment % colors.length]; // Selecciona el color del segmento seleccionado
     setRotation(rotation);
     setSpinning(true);
     setTimeout(() => {
       setSpinning(false);
       setPrizeProps({ opacity: 1 }); // Muestra el texto del premio
+      setColor(color); // Establece el color del premio
       setConfetti(true); // Lanza el confeti
       setTimeout(() => {
         setConfetti(false); // Detiene el confeti después de que la animación se haya completado
@@ -60,7 +58,11 @@ const App: React.FC = () => {
 
   const products = [
     "https://reinco.com.ve/wp-content/uploads/2024/03/clase-b.jpg",
-    "https://reinco.com.ve/wp-content/uploads/2024/03/clase-c.jpg",
+    "https://pinturaspintugama.com/wp-content/uploads/2023/03/Impermeabilizante.jpg",
+    "https://pinturaspintugama.com/wp-content/uploads/2023/03/cancha-800x800.jpg",
+    "https://pinturaspintugama.com/wp-content/uploads/2023/03/trafico-800x800.jpg",
+    "https://pinturaspintugama.com/wp-content/uploads/2023/03/fonto-antialcalino-800x800.jpg",
+    "https://pinturaspintugama.com/wp-content/uploads/2023/03/Impermeabilizante.jpg",
   ];
 
   const confettiConfig = {
@@ -133,11 +135,11 @@ const App: React.FC = () => {
         >
           Girar la ruleta
         </animated.button>
-        {prize && color && (
+        {/* {color && (
           <animated.p style={{ ...prizeProps, color: "white" }}>
-            ¡Has ganado {prize}$!
+            ¡Has ganado el color {color}!
           </animated.p>
-        )}
+        )} */}
         <Confetti active={confetti} config={confettiConfig} key={confettiKey} />
       </div>
       <div
