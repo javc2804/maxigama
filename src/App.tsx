@@ -23,19 +23,21 @@ const colors = [
 ];
 
 const App: React.FC = () => {
-  const { num } = useParams<{ num: string }>();
+  // const { num } = useParams<{ num: string }>();
+  const num = 8;
+  console.log(num);
   const [spinning, setSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
-  const [segments, setSegments] = useState(Number(num)); // Nuevo estado para la cantidad de segmentos
+  const [segments, setSegments] = useState(8); // Nuevo estado para la cantidad de segmentos
   const [props, set] = useSpring(() => ({ scale: 1 }));
 
   const [confetti, setConfetti] = useState(false); // Nuevo estado para el confeti
   const [confettiKey] = useState<Key>(Math.random()); // Nuevo estado para la clave del confeti
 
   // Actualiza la cantidad de segmentos cuando cambia el parámetro num
-  useEffect(() => {
-    setSegments(Number(num));
-  }, [num]);
+  // useEffect(() => {
+  //   setSegments(Number(num));
+  // }, [num]);
 
   // Función para girar la ruleta
   const spinWheel = () => {
