@@ -1,7 +1,7 @@
 // App.tsx
-import React, { useState, useEffect, Key } from "react";
+import React, { useState, Key, useEffect } from "react";
 import { useSpring, animated } from "react-spring";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import Confetti from "react-dom-confetti";
 import "./App.css";
 
@@ -35,9 +35,9 @@ const App: React.FC = () => {
   const [confettiKey] = useState<Key>(Math.random()); // Nuevo estado para la clave del confeti
 
   // Actualiza la cantidad de segmentos cuando cambia el parámetro num
-  // useEffect(() => {
-  //   setSegments(Number(num));
-  // }, [num]);
+  useEffect(() => {
+    setSegments(Number(num));
+  }, [num]);
 
   // Función para girar la ruleta
   const spinWheel = () => {
