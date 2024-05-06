@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import Confetti from "react-dom-confetti";
 import "./App.css";
 
+// Colores para los segmentos de la ruleta
 const colors = [
   "red",
   "#ff6f2a",
@@ -23,22 +24,20 @@ const colors = [
 
 const App: React.FC = () => {
   const { num } = useParams<{ num: string }>();
-  const [color, setColor] = useState<string | null>(null);
   const [spinning, setSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [segments, setSegments] = useState(Number(num)); // Nuevo estado para la cantidad de segmentos
   const [props, set] = useSpring(() => ({ scale: 1 }));
-  const [prizeProps, setPrizeProps] = useSpring(() => ({
-    opacity: 0,
-    config: config.stiff,
-  }));
+
   const [confetti, setConfetti] = useState(false); // Nuevo estado para el confeti
   const [confettiKey, setConfettiKey] = useState<Key>(Math.random()); // Nuevo estado para la clave del confeti
 
+  // Actualiza la cantidad de segmentos cuando cambia el parámetro num
   useEffect(() => {
     setSegments(Number(num));
   }, [num]);
 
+  // Función para girar la ruleta
   const spinWheel = () => {
     const rotation = Math.floor(Math.random() * 360); // Gira la ruleta a una posición aleatoria
     const selectedSegment = Math.floor(rotation / (360 / segments)); // Calcula el segmento seleccionado
@@ -47,8 +46,6 @@ const App: React.FC = () => {
     setSpinning(true);
     setTimeout(() => {
       setSpinning(false);
-      setPrizeProps({ opacity: 1 }); // Muestra el texto del premio
-      setColor(color); // Establece el color del premio
       setConfetti(true); // Lanza el confeti
       setTimeout(() => {
         setConfetti(false); // Detiene el confeti después de que la animación se haya completado
@@ -56,6 +53,7 @@ const App: React.FC = () => {
     }, 3000);
   };
 
+  // Imágenes de los productos para los segmentos de la ruleta
   const products = [
     "https://reinco.com.ve/wp-content/uploads/2024/03/clase-b.jpg",
     "https://pinturaspintugama.com/wp-content/uploads/2023/03/Impermeabilizante.jpg",
@@ -65,6 +63,7 @@ const App: React.FC = () => {
     "https://pinturaspintugama.com/wp-content/uploads/2023/03/Impermeabilizante.jpg",
   ];
 
+  // Configuración del confeti
   const confettiConfig = {
     angle: 90,
     spread: 360,
@@ -79,6 +78,7 @@ const App: React.FC = () => {
     colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"],
   };
 
+  // Renderiza el componente
   return (
     <div className="App">
       <img
