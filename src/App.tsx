@@ -5,6 +5,13 @@ import { useSpring, animated } from "react-spring";
 import Confetti from "react-dom-confetti";
 import "./App.css";
 
+import img1 from "./assets/1.png";
+import img2 from "./assets/2.png";
+import img3 from "./assets/3.png";
+import img4 from "./assets/4.png";
+import img5 from "./assets/5.png";
+import img6 from "./assets/6.png";
+
 // Colores para los segmentos de la ruleta
 const colors = [
   "red",
@@ -56,14 +63,7 @@ const App: React.FC = () => {
   };
 
   // Imágenes de los productos para los segmentos de la ruleta
-  const products = [
-    "https://reinco.com.ve/wp-content/uploads/2024/03/clase-b.jpg",
-    "https://pinturaspintugama.com/wp-content/uploads/2023/03/Impermeabilizante.jpg",
-    "https://pinturaspintugama.com/wp-content/uploads/2023/03/cancha-800x800.jpg",
-    "https://pinturaspintugama.com/wp-content/uploads/2023/03/trafico-800x800.jpg",
-    "https://pinturaspintugama.com/wp-content/uploads/2023/03/fonto-antialcalino-800x800.jpg",
-    "https://pinturaspintugama.com/wp-content/uploads/2023/03/Impermeabilizante.jpg",
-  ];
+  const products = [img1, img2, img3, img4, img5, img6];
 
   // Configuración del confeti
   const confettiConfig = {
@@ -104,6 +104,10 @@ const App: React.FC = () => {
               src={products[index % products.length]}
               alt="Descripción de la imagen"
               className="segment-image"
+              style={{
+                width: "130px", // Ajusta el ancho de la imagen
+                height: "130px", // Ajusta la altura de la imagen
+              }}
             />
           </div>
         ))}
