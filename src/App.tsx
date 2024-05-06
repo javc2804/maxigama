@@ -1,6 +1,6 @@
 // App.tsx
 import React, { useState, useEffect, Key } from "react";
-import { useSpring, animated, config } from "react-spring";
+import { useSpring, animated } from "react-spring";
 import { useParams } from "react-router-dom";
 import Confetti from "react-dom-confetti";
 import "./App.css";
@@ -30,7 +30,7 @@ const App: React.FC = () => {
   const [props, set] = useSpring(() => ({ scale: 1 }));
 
   const [confetti, setConfetti] = useState(false); // Nuevo estado para el confeti
-  const [confettiKey, setConfettiKey] = useState<Key>(Math.random()); // Nuevo estado para la clave del confeti
+  const [confettiKey] = useState<Key>(Math.random()); // Nuevo estado para la clave del confeti
 
   // Actualiza la cantidad de segmentos cuando cambia el parámetro num
   useEffect(() => {
@@ -40,8 +40,8 @@ const App: React.FC = () => {
   // Función para girar la ruleta
   const spinWheel = () => {
     const rotation = Math.floor(Math.random() * 360); // Gira la ruleta a una posición aleatoria
-    const selectedSegment = Math.floor(rotation / (360 / segments)); // Calcula el segmento seleccionado
-    const color = colors[selectedSegment % colors.length]; // Selecciona el color del segmento seleccionado
+    // const selectedSegment = Math.floor(rotation / (360 / segments)); // Calcula el segmento seleccionado
+    // const color = colors[selectedSegment % colors.length]; // Selecciona el color del segmento seleccionado
     setRotation(rotation);
     setSpinning(true);
     setTimeout(() => {
