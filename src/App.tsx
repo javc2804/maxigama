@@ -61,10 +61,8 @@ const App: React.FC = () => {
     }, 3000);
   };
 
-  // Imágenes de los productos para los segmentos de la ruleta
   const products = [img1, img3, img4, img5, img6];
 
-  // Configuración del confeti
   const confettiConfig = {
     angle: 90,
     spread: 360,
