@@ -1,7 +1,6 @@
 // App.tsx
 import React, { useState, Key, useEffect } from "react";
 import { useSpring, animated } from "react-spring";
-// import { useParams } from "react-router-dom";
 import Confetti from "react-dom-confetti";
 import "./App.css";
 
@@ -11,7 +10,6 @@ import img4 from "./assets/4.png";
 import img5 from "./assets/5.png";
 import img6 from "./assets/6.png";
 
-// Colores para los segmentos de la ruleta
 const colors = [
   "red",
   "#ff6f2a",
@@ -25,38 +23,32 @@ const colors = [
   "gray",
   "lightblue",
   "#a83727",
-  "purple", // color adicional
+  "purple",
 ];
 
 const App: React.FC = () => {
-  // const { num } = useParams<{ num: string }>();
   const num = 8;
-  console.log(num);
   const [spinning, setSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
-  const [segments, setSegments] = useState(8); // Nuevo estado para la cantidad de segmentos
+  const [segments, setSegments] = useState(8);
   const [props, set] = useSpring(() => ({ scale: 1 }));
 
-  const [confetti, setConfetti] = useState(false); // Nuevo estado para el confeti
-  const [confettiKey] = useState<Key>(Math.random()); // Nuevo estado para la clave del confeti
+  const [confetti, setConfetti] = useState(false);
+  const [confettiKey] = useState<Key>(Math.random());
 
-  // Actualiza la cantidad de segmentos cuando cambia el parámetro num
   useEffect(() => {
     setSegments(Number(num));
   }, [num]);
 
-  // Función para girar la ruleta
   const spinWheel = () => {
-    const rotation = Math.floor(Math.random() * 360); // Gira la ruleta a una posición aleatoria
-    // const selectedSegment = Math.floor(rotation / (360 / segments)); // Calcula el segmento seleccionado
-    // const color = colors[selectedSegment % colors.length]; // Selecciona el color del segmento seleccionado
+    const rotation = Math.floor(Math.random() * 360);
     setRotation(rotation);
     setSpinning(true);
     setTimeout(() => {
       setSpinning(false);
-      setConfetti(true); // Lanza el confeti
+      setConfetti(true);
       setTimeout(() => {
-        setConfetti(false); // Detiene el confeti después de que la animación se haya completado
+        setConfetti(false);
       }, confettiConfig.duration);
     }, 3000);
   };
@@ -77,7 +69,6 @@ const App: React.FC = () => {
     colors: ["#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"],
   };
 
-  // Renderiza el componente
   return (
     <div className="App">
       <img
@@ -102,18 +93,15 @@ const App: React.FC = () => {
               alt="Descripción de la imagen"
               className="segment-image"
               style={{
-                width: "130px", // Ajusta el ancho de la imagen
-                height: "130px", // Ajusta la altura de la imagen
+                width: "130px",
+                height: "130px",
               }}
             />
           </div>
         ))}
       </div>
-      <div className="indicator"></div> {/* Aquí está el indicador */}
+      <div className="indicator"></div>
       <div className="controls" style={{ zIndex: 2 }}>
-        {" "}
-        {/* Ajusta el z-index del botón */}
-        {/* ... */}
         <animated.button
           style={{
             transform: props.scale.to((scale) => `scale(${scale})`),
@@ -129,27 +117,70 @@ const App: React.FC = () => {
             cursor: "pointer",
             borderRadius: "12px",
             boxShadow: "0 9px #999",
-            transition: "transform 0.2s", // Ajusta la duración de la transición
+            transition: "transform 0.2s",
             textShadow: "1px 1px 2px black",
           }}
-          onMouseDown={() => set({ scale: 0.8 })} // Ajusta la escala para una animación más notable
+          onMouseDown={() => set({ scale: 0.8 })}
           onMouseUp={() => set({ scale: 1 })}
           onClick={spinWheel}
         >
           Girar la ruleta
         </animated.button>
-        {/* {color && (
-          <animated.p style={{ ...prizeProps, color: "white" }}>
-            ¡Has ganado el color {color}!
-          </animated.p>
-        )} */}
         <Confetti active={confetti} config={confettiConfig} key={confettiKey} />
       </div>
       <div
         style={{
           position: "absolute",
           top: 0,
+          right: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 1,
+        }}
+      >
+        <Confetti active={confetti} config={confettiConfig} />
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
           left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 1,
+        }}
+      >
+        <Confetti active={confetti} config={confettiConfig} />
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          right: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 1,
+        }}
+      >
+        <Confetti active={confetti} config={confettiConfig} />
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 1,
+        }}
+      >
+        <Confetti active={confetti} config={confettiConfig} />
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
           width: "100%",
           height: "100%",
           zIndex: 1,
