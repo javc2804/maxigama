@@ -59,7 +59,7 @@ const App: React.FC = () => {
     angle: 90,
     spread: 360,
     startVelocity: 20,
-    elementCount: 200,
+    elementCount: 100,
     dragFriction: 0.1,
     duration: 5000,
     stagger: 3,
@@ -92,10 +92,12 @@ const App: React.FC = () => {
               src={products[index % products.length]}
               alt="Descripción de la imagen"
               className="segment-image"
-              style={{
-                width: "130px",
-                height: "130px",
-              }}
+              style={
+                {
+                  // width: "100%",
+                  // height: "100%",
+                }
+              }
             />
           </div>
         ))}
